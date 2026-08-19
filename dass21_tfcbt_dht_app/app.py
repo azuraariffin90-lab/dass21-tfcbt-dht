@@ -99,14 +99,6 @@ def _result_cards(result: dict) -> None:
 
 def _student_form() -> None:
     _display_hero()
-    st.markdown(
-        """
-        <span class="privacy-pill">ID samaran sahaja</span>
-        <span class="privacy-pill">Tiada nama / IC / telefon</span>
-        <span class="privacy-pill">Saringan trauma adalah pilihan</span>
-        """,
-        unsafe_allow_html=True,
-    )
     st.info(
         "Ini ialah saringan kendiri dan alat pengumpulan data penyelidikan, bukan diagnosis. "
         "Jawab berdasarkan keadaan sepanjang minggu yang lalu untuk bahagian DASS-21."
@@ -493,7 +485,6 @@ def main() -> None:
     page = st.sidebar.radio("Navigasi", ["Borang Pelajar", "Dashboard Admin", "Tentang & Etika"])
     st.sidebar.divider()
     st.sidebar.caption(f"Versi {APP_VERSION}")
-    st.sidebar.caption("Data disimpan dalam fail Excel tempatan.")
 
     if page == "Borang Pelajar":
         _student_form()
