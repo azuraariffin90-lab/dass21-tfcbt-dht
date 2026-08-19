@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-APP_VERSION = "Versi 1.0.0 AzuraAriffin@Copyright"
+APP_VERSION = "1.0.0 AzuraAriffin@Copyright"
 
 KKM_DASS_URL = "https://mits.moh.gov.my/Modules/Patient/public-dass/"
 DASS_SCORING_REFERENCE = "https://pmc.ncbi.nlm.nih.gov/articles/PMC6805560/"
