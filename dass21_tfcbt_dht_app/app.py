@@ -83,7 +83,7 @@ def _display_hero() -> None:
         """
         <div class="hero">
           <h1>Saringan Kesejahteraan Pelajar</h1>
-          <p>DASS-21 untuk kegunaan penyelidikan setempat.</p>
+          <p>DASS-21 dan indikator eksploratori TF-CBT-DHT untuk kegunaan penyelidikan setempat.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -99,6 +99,14 @@ def _result_cards(result: dict) -> None:
 
 def _student_form() -> None:
     _display_hero()
+    st.markdown(
+        """
+        <span class="privacy-pill">ID samaran sahaja</span>
+        <span class="privacy-pill">Tiada nama / IC / telefon</span>
+        <span class="privacy-pill">Saringan trauma adalah pilihan</span>
+        """,
+        unsafe_allow_html=True,
+    )
     st.info(
         "Ini ialah saringan kendiri dan alat pengumpulan data penyelidikan, bukan diagnosis. "
         "Jawab berdasarkan keadaan sepanjang minggu yang lalu untuk bahagian DASS-21."
@@ -134,7 +142,29 @@ def _student_form() -> None:
             )
 
         st.divider()
-      
+        st.subheader("3 · Saringan trauma TF-CBT-DHT (pilihan)")
+        st.warning(
+            "15 item berikut ialah indikator eksploratori kajian, bukan instrumen trauma/PTSD yang telah divalidasi. "
+            "Anda boleh tidak menyertai bahagian ini tanpa menjejaskan submission DASS-21."
+        )
+        consent_trauma = st.checkbox(
+            "Saya bersetuju menjawab item trauma pilihan ini untuk tujuan penyelidikan."
+        )
+        trauma_answers: dict[str, int | None] = {item["id"]: None for item in TRAUMA_ITEMS}
+        if consent_trauma:
+            st.caption(
+                "Rujuk pengalaman sepanjang 4 minggu yang lalu, kecuali item yang menyebut ‘pada masa ini’. "
+                "Biarkan item kosong jika tidak berkaitan atau anda memilih untuk tidak menjawab."
+            )
+            for item in TRAUMA_ITEMS:
+                trauma_answers[item["id"]] = st.radio(
+                    f"{item['id']} · {item['text']}",
+                    options=list(TRAUMA_OPTIONS),
+                    format_func=lambda value: f"{value} — {TRAUMA_OPTIONS[value]}",
+                    index=None,
+                    key=f"trauma_{item['id']}",
+                )
+
         submitted = st.form_submit_button("Hantar saringan", type="primary", use_container_width=True)
 
     if not submitted:
@@ -463,6 +493,7 @@ def main() -> None:
     page = st.sidebar.radio("Navigasi", ["Borang Pelajar", "Dashboard Admin", "Tentang & Etika"])
     st.sidebar.divider()
     st.sidebar.caption(f"Versi {APP_VERSION}")
+    st.sidebar.caption("Data disimpan dalam fail Excel tempatan.")
 
     if page == "Borang Pelajar":
         _student_form()
